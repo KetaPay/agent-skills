@@ -3,6 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node scripts/check.mjs"
+    "test": "node scripts/check.mjs",
+    "test:links": "node scripts/check.mjs --links",
+    "sync-spec": "node scripts/sync-spec.mjs"
+  },
+  "devDependencies": {
+    "yaml": "2.8.1"
   }
 }

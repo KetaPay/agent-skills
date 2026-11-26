@@ -1,6 +1,9 @@
 ---
 name: ketapay-money-safety
 description: Non-negotiable rules for any code that touches KetaPay money or keys - kobo amounts, idempotency keys, secret and test/live keys, fees, error handling and the go-live checklist. Use whenever writing, reviewing or deploying a KetaPay integration, and before switching from sk_test_ to sk_live_.
+license: MIT
+metadata:
+  version: "0.1.0"
 ---
 
 # KetaPay money safety
@@ -34,7 +37,7 @@ Read this before writing or reviewing any KetaPay code. Each rule exists because
 
 ## Errors
 
-- Branch on `err.code`, not the message. Every error extends `KetaPayError` with `type`, `code`, `param`, `statusCode` and `requestId`.
+- Branch on `err.code`, not the message. Every error extends `KetaPayError` with `type`, `code`, `param`, `statusCode` and `requestId`. Every code and what to do: [references/errors.md](references/errors.md).
 - Log `requestId` (the `KetaPay-Request-Id` header) with every failure, for support.
 - Back off on `429`.
 

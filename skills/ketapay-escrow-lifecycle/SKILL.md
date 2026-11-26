@@ -1,6 +1,9 @@
 ---
 name: ketapay-escrow-lifecycle
 description: How a KetaPay escrow moves from funded to completed - milestones, delivery, release, release codes, disputes, flags and who is allowed to do what. Use when building order status pages, seller delivery, buyer release, dispute UI, or any code that acts on an escrow after payment.
+license: MIT
+metadata:
+  version: "0.1.0"
 ---
 
 # KetaPay escrow lifecycle
@@ -20,31 +23,39 @@ Escrow statuses: `active`, `disputed`, `completed`, `refunded`. Milestones: `fun
 
 ## Acting for a customer
 
-KetaPay sends the customer a one-time code; your server exchanges it for a 15-minute customer token and passes it on the call:
+Delivering, releasing and requesting changes need the right customer's token (`ketapay-customer-tokens`):
 
 ```ts
-const otp = await ketapay.customerSessions.create({ email: seller.email })
-const { token } = await ketapay.customerSessions.verify(otp.id, codeTheyTyped)
-
-await ketapay.escrows.milestones.deliver(escrowId, milestoneId, { note: 'Shipped, GIG tracking 88123' }, { customerToken: token })
+await ketapay.escrows.milestones.deliver(escrowId, milestoneId, { note: 'Shipped, GIG tracking 88123', attachments: [{ file: file.id }] }, { customerToken: sellerToken })
+await ketapay.escrows.milestones.requestChanges(escrowId, milestoneId, { note: 'The logo is the wrong colour' }, { customerToken: buyerToken })
+await ketapay.escrows.milestones.release(escrowId, milestoneId, {}, { customerToken: buyerToken })
 ```
 
-- Keep customer tokens on the server and never log them.
-- Use the **buyer's** token to release, the **seller's** to deliver. Never let one side act as the other.
-- An AI agent or background job must never hold a customer token for someone. That is the customer's decision.
+- Milestones go in order: only the current one can be delivered or released (`milestone_not_current`, `milestone_not_delivered`).
+- With `release.method: 'buyer_confirms'` the buyer has `inspection_hours` after delivery to release or request changes. If they don't respond, the seller can open a `buyer_unresponsive` dispute after `inspection_ends_at`.
+- Up to 20 milestones, adding up to `amount`; once funded the plan can't change.
+- Delivery files: [references/files.md](references/files.md).
 
 ## Release codes (in-person deals)
 
-With `release.method: 'release_code'`, the buyer gets a code and gives it to the seller on handover. **Show the release code only to the buyer.** Never log it, email it to the seller or put it in an admin panel.
+With `release.method: 'release_code'`, the buyer gets a 6-digit code per milestone and gives it to the seller on handover. The seller entering it delivers and releases in one step:
+
+```ts
+await ketapay.escrows.milestones.release(escrowId, milestoneId, { release_code: codeFromBuyer })
+```
+
+- KetaPay sends the code to the buyer by email and WhatsApp or SMS. To show it in your app too: `escrows.milestones.releaseCode(escrowId, milestoneId, { customerToken: buyerToken })`.
+- **Show it only to the buyer.** Never log it, send it to the seller's screen or put it in an admin panel.
+- Wrong code: `release_code_invalid`; after 5, entry locks for 1 hour (`release_code_locked`) and the buyer is alerted. A disputed milestone can't be released with a code.
 
 ## Ending a deal early
 
 - **Before payment:** cancel the checkout session. No money has moved.
 - **After payment:** neither side can cancel alone. Either side opens a dispute; the seller can concede, which refunds the buyer everything still held. Money only ever goes back to the account that paid.
 
-## Disputes
+## Disputes and refunds
 
-A dispute is a request for a refund (full or part). While one is open, release calls fail with `dispute_open` (a `ConflictError`). Show that state instead of retrying. Handle `dispute.opened` and `dispute.resolved`, and read the dispute docs for who decides and the evidence deadlines.
+A dispute freezes the milestone; releases fail with `dispute_open` until it ends. Opening, evidence, refunds and chargebacks: `ketapay-disputes-refunds`.
 
 ## Flag for review
 

@@ -1,6 +1,9 @@
 ---
 name: ketapay-webhooks
 description: Receive KetaPay webhook events safely - verify the KetaPay-Signature against the raw body, deduplicate, handle events in any order and test them. Use when writing or debugging a KetaPay webhook endpoint, signature verification, secret rotation, or code reacting to escrow.funded, milestone.released, dispute or payout events.
+license: MIT
+metadata:
+  version: "0.1.0"
 ---
 
 # KetaPay webhooks
@@ -53,7 +56,11 @@ After `rotate_secret`, both secrets sign every delivery for 24 hours. Pass both:
 | `dispute.opened` / `dispute.resolved` | Show the dispute state; don't ship further |
 | `payout.sent` / `payout.failed` | Tell the seller |
 
-The full list and payloads: https://docs.ketapay.com/integrate/webhooks
+Every event type and what to do with it: [references/events.md](references/events.md).
+
+## Managing endpoints
+
+Register on the dashboard's **Developers** page or with `ketapay.webhookEndpoints.create({ url })` (https; leave `enabled_events` out to get everything). The signing secret is shown once: put it in your secret manager. `list`, `update` (url, events, `status`), `del` and `rotateSecret` manage them. Read past events with `ketapay.events.list()` (last 30 days) to backfill after an outage.
 
 ## Test it
 

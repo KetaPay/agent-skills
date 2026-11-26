@@ -1,6 +1,9 @@
 ---
 name: ketapay-checkout
 description: Take a buyer's payment into KetaPay escrow with a checkout session, then confirm it was really paid before fulfilling the order. Use when adding KetaPay payments, a "pay with escrow" button, a checkout session, a return URL handler or order-paid logic to an app.
+license: MIT
+metadata:
+  version: "0.1.0"
 ---
 
 # KetaPay checkout
@@ -41,7 +44,17 @@ const session = await ketapay.checkoutSessions.create(
 // redirect to session.url
 ```
 
-Optional fields: `milestones` (split the amount, released separately), `release.method` (`buyer_confirms` default, or `release_code` for in-person deals), `images`, `attachments`, `expires_at` (15 minutes to 7 days, default 24 hours), `metadata`.
+Every field, and the `fees` that come back: [references/session-fields.md](references/session-fields.md). Merchants leave `seller` out; platforms name it (`ketapay-platforms-payouts`).
+
+## Three ways to pay
+
+| | |
+| --- | --- |
+| Redirect | Send the buyer to `session.url`; they come back to `return_url`. Quickest |
+| On your page | Open the same checkout over your page with `@ketapay/checkout` or `@ketapay/react` |
+| Your own screen | A one-time account number in your UI, paid by transfer (needs the buyer's customer token) |
+
+The last two: [references/on-your-page-and-transfer.md](references/on-your-page-and-transfer.md).
 
 ## Verify on return
 
@@ -69,4 +82,4 @@ Show the buyer `fees.buyer_total` before they pay. Never hardcode a fee or perce
 
 ## Test it
 
-With an `sk_test_` key, pay a session from code: `await ketapay.testHelpers.checkoutSessions.pay(session.id)`. One-time codes are always `123456` and no messages are sent.
+With an `sk_test_` key, pay a session from code: `await ketapay.testHelpers.checkoutSessions.pay(session.id)`. More in `ketapay-testing`.
