@@ -2,13 +2,15 @@
 
 Know-how for AI coding assistants building on [KetaPay](https://ketapay.com). Each skill is a folder with a `SKILL.md` in the open [Agent Skills](https://agentskills.io) format, read by Claude Code, Cursor, Codex, VS Code, Gemini CLI and others. The assistant sees one line per skill and loads the rest when a task needs it.
 
-> Draft. Not published yet.
-
 ## Install
 
 ```sh
-npx skills add KetaPay/agent-skills
+npx skills add KetaPay/agent-skills            # pick skills and assistants interactively
+npx skills add KetaPay/agent-skills --all      # every skill
+npx skills add KetaPay/agent-skills --list     # see what's here first
 ```
+
+Needs Node.js 22.20 or later.
 
 Or copy the folders you want from `skills/` into your project's skills folder (for Claude Code, `.claude/skills/`).
 
