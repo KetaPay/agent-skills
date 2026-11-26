@@ -54,7 +54,9 @@ Every error has `{ error: { type, code, message, param, request_id } }`. Branch 
 | `missing_scope` | Use a key with the scope the endpoint names |
 | `live_mode_not_enabled` | Live opens once KetaPay verifies the business: use the test key until then |
 | `platform_not_approved` | Naming a seller needs platform approval (test mode can be switched first) |
-| `rulings_paused` | KetaPay paused this platform's refunds on customers' deals |
+| `dispute_required` | A platform can't refund a deal between its customers; it decides one only when a dispute is raised |
+| `not_the_decider` | KetaPay decides disputes on your own sales and on deals your team is part of; a platform decides only its customers' deals |
+| `rulings_paused` | KetaPay paused this platform's rulings and decides its open disputes |
 | `daily_limit_reached` | This would pass the rolling 24-hour limit |
 | `action_already_scheduled` | A refund or release on this escrow is already running: check the money action |
 | `idempotency_key_missing` | Add an `Idempotency-Key` to the `POST` |

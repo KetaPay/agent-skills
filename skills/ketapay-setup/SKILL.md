@@ -74,7 +74,7 @@ Every operation, its SDK call, its scope and whether it needs the customer's pro
 | Let buyers and sellers act from your UI | `ketapay-customer-tokens` |
 | Delivery, release, milestones, release codes, files | `ketapay-escrow-lifecycle` |
 | Disputes, refunds, chargebacks | `ketapay-disputes-refunds` |
-| Marketplaces, seller payout accounts, commission | `ketapay-platforms-payouts` |
+| Marketplaces: deciding disputes, seller verification, payout accounts, commission | `ketapay-platforms-payouts` |
 | Webhooks and events | `ketapay-webhooks` |
 | Test mode, test values, test helpers | `ketapay-testing` |
 | Rules for money and keys, errors, going live | `ketapay-money-safety` |

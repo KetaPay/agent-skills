@@ -56,6 +56,8 @@ await ketapay.escrows.milestones.release(escrow.id, m.id, {}, { customerToken: b
 | Changes after delivery | Buyer `requestChanges`, seller delivers again |
 | A dispute the parties settle | Either opens it; the other concedes, or the opener withdraws |
 | A failed payout | Pay the seller to `0000000001` |
+| A payout held for verification | Release to a seller you haven't verified, then `ketapay.testHelpers.customers.verify({ customerToken: sellerToken })` |
+| A platform ruling | Open a dispute as the buyer, then `ketapay.disputes.resolve(id, { outcome: 'split', refund_amount, reason })` with an `escrows:manage` test key |
 
 The inspection period runs on the clock in test mode too.
 

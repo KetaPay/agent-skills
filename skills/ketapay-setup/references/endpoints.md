@@ -50,6 +50,7 @@ Base URL `https://api.ketapay.com/v1`. Full reference: https://docs.ketapay.com/
 | `listEscrowDisputes` | `disputes.listForEscrow(escrowId)` | `escrows:read` | |
 | `getDispute` | `disputes.retrieve(id)` | `escrows:read` | |
 | `concedeDispute` | `disputes.concede(id, { customerToken })` | `escrows:act` | seller |
+| `resolveDispute` | `disputes.resolve(id, { outcome, refund_amount, reason })` | `escrows:manage` | platforms, on their customers' deals |
 | `withdrawDispute` | `disputes.withdraw(id, { customerToken })` | `escrows:act` | whoever opened it |
 | `escalateDispute` | `disputes.escalate(id, { customerToken })` | `escrows:act` | buyer or seller |
 | `submitDisputeEvidence` | `disputes.submitEvidence(id, { statement, files }, { customerToken })` | `escrows:act` | buyer or seller |
@@ -58,7 +59,7 @@ Base URL `https://api.ketapay.com/v1`. Full reference: https://docs.ketapay.com/
 | `getChargeback` | `chargebacks.retrieve(id)` | `escrows:read` | |
 | `submitChargebackEvidence` | `chargebacks.submitEvidence(id, { statement }, { customerToken })` | `escrows:act` | seller |
 
-## Payout accounts (platforms)
+## Payout accounts and seller verification (platforms)
 
 | Operation | Node.js | Scope | Customer proof |
 | --- | --- | --- | --- |
@@ -67,6 +68,7 @@ Base URL `https://api.ketapay.com/v1`. Full reference: https://docs.ketapay.com/
 | `confirmPayoutAccount` | `payoutAccounts.confirm(id, code, { customerToken })` | `payout_accounts:write` | seller, plus the code |
 | `listPayoutAccounts` | `payoutAccounts.list({ customerToken })` | `payout_accounts:read` | seller |
 | `deletePayoutAccount` | `payoutAccounts.del(id, { customerToken })` | `payout_accounts:write` | seller |
+| `createVerificationLink` | `verificationLinks.create({ return_url, refresh_url }, { customerToken })` | `payout_accounts:write` | seller |
 
 ## Webhooks and events
 
@@ -87,3 +89,4 @@ Base URL `https://api.ketapay.com/v1`. Full reference: https://docs.ketapay.com/
 | Operation | Node.js | Scope | Customer proof |
 | --- | --- | --- | --- |
 | `testPayCheckoutSession` | `testHelpers.checkoutSessions.pay(id)` | `test_helpers:write` | test keys only |
+| `testVerifyCustomer` | `testHelpers.customers.verify({ customerToken })` | `test_helpers:write` | seller; test keys only |

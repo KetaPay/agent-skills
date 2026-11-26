@@ -51,11 +51,11 @@ await ketapay.escrows.milestones.release(escrowId, milestoneId, { release_code: 
 ## Ending a deal early
 
 - **Before payment:** cancel the checkout session. No money has moved.
-- **After payment:** neither side can cancel alone. Either side opens a dispute; the seller can concede, which refunds the buyer everything still held. Money only ever goes back to the account that paid.
+- **After payment:** neither side can cancel alone. Either side opens a dispute; the seller can concede, which refunds the buyer everything still held. Otherwise it is decided: by KetaPay on a merchant's own sale, by the platform on a deal between its customers. A merchant can also refund its own sale.
 
 ## Disputes and refunds
 
-A dispute freezes the milestone; releases fail with `dispute_open` until it ends. Opening, evidence, refunds and chargebacks: `ketapay-disputes-refunds`.
+A dispute freezes the milestone; releases fail with `dispute_open` until it ends. Opening, evidence, platform rulings, refunds and chargebacks: `ketapay-disputes-refunds`.
 
 ## Flag for review
 
