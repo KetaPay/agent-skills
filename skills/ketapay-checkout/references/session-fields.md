@@ -25,7 +25,10 @@ Source: https://docs.ketapay.com/payments/accept-payments and the `CreateCheckou
 | `fees` field | Meaning |
 | --- | --- |
 | `buyer_total` | What the buyer is charged: `amount + buyer_fee + buyer_vat`. Show it before they pay |
-| `seller_payout` | What the seller receives once all is released: `amount - seller_fee - commission` |
-| `buyer_fee`, `buyer_vat`, `seller_fee`, `commission` | The parts, in kobo |
+| `seller_payout` | What the seller receives once all is released: `amount - seller_fee - seller_vat - commission` |
+| `buyer_fee`, `buyer_vat`, `seller_fee`, `seller_vat` | KetaPay's fee and its VAT, split by your fee setting (`split` default, `buyer`, `seller`, `platform`) |
+| `platform_fee`, `platform_vat` | Set only when your platform pays the fee, out of `commission` |
+| `commission` | Your commission before `platform_fee` comes out of it |
+| `rate` | `fee_bps`, `fee_flat` (once per escrow) and `vat_bps` the escrow was priced on |
 
 Read figures from `fees`; never work them out yourself.

@@ -10,10 +10,10 @@ Each endpoint names the scope it needs (`x-required-scope` in the API reference)
 | `escrows:read` | Read escrows, disputes, chargebacks and money actions |
 | `escrows:act` | Act for a customer, with their customer token (deliver, release, disputes, evidence) |
 | `escrows:flag` | Flag an escrow for KetaPay to review |
-| `escrows:manage` | Refund with the key alone. Never added to an existing key: choose it when you create the key, and only for the system that truly refunds |
+| `escrows:manage` | Refund your own sales, and on a platform decide your customers' disputes, with the key alone. Never added to an existing key: choose it when you create the key, and only for the system that truly refunds |
 | `files:write` | Upload files |
 | `payout_accounts:read` | List banks and a seller's payout accounts |
-| `payout_accounts:write` | Add, confirm and remove payout accounts (with the seller's token) |
+| `payout_accounts:write` | Add, confirm and remove payout accounts, and create seller verification links (with the seller's token) |
 | `webhook_endpoints:read` | Read webhook endpoints |
 | `webhook_endpoints:write` | Create, change, delete, test endpoints and rotate secrets |
 | `events:read` | Read events |
@@ -26,5 +26,5 @@ Each endpoint names the scope it needs (`x-required-scope` in the API reference)
 | Web checkout server | `checkout_sessions:read`, `checkout_sessions:write`, `customer_sessions:write`, `escrows:read`, `escrows:act`, `files:write` |
 | Webhook worker | `escrows:read`, `events:read` |
 | Seller payouts (platforms) | `customer_sessions:write`, `payout_accounts:read`, `payout_accounts:write` |
-| Back-office refunds | `escrows:read`, `escrows:manage` (its own key, kept apart) |
+| Back-office refunds and rulings | `escrows:read`, `escrows:manage` (its own key, kept apart) |
 | CI tests | the above plus `test_helpers:write`, test key only |
